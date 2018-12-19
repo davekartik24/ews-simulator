@@ -1,8 +1,15 @@
 $(document).ready(function () {
     $("#input-btn").click(function () {
-        processInputPan();
-        processInputToken();
-        processInputRegId();
+        let pan = $("#input-pan").val();
+        let token = $("#input-token").val();
+        let regId = $("#input-regid").val();
+        if (pan !== '') {
+            processInputPan();
+        } else if (token !== '') {
+            processInputToken();
+        } else if (regId !== '') {
+            processInputRegId();
+        }
     });
 
     $("#input-reset-btn").click(function () {
@@ -11,6 +18,60 @@ $(document).ready(function () {
 
     $("#output-reset-btn").click(function () {
         $("input[id^=output]").val('');
+    });
+    
+    $("#output-btn").click(function () {
+        let pan = $("#output-pan").val();
+        let token = $("#output-token").val();
+        let regId = $("#output-regid").val();
+        let tokenNewlyGen = $("#output-tokennewlygen").val();
+        let walletType = $("#output-wallet").val();
+        let cvv = $("#output-cvv").val();
+
+        if (pan !== '') {
+            let first6 = pan.substr(0, 6);
+            let last4 = pan.substr(pan.length - 4, pan.length);
+            let mid = pan.substr(6, pan.length - 10);
+            let regId = '999999999' - mid + '';
+            let output_mid = mid.split("").reverse().join("");
+            $("#input-token").val(first6 + output_mid + last4);
+            $("#input-regid").val(first6.split("").reverse().join("") + regId + last4.split("").reverse().join(""));
+        } else if (token !== '') {
+            let first6 = token.substr(0, 6);
+            let last4 = token.substr(token.length - 4, token.length);
+            let mid = token.substr(6, token.length - 10);
+            let regId = '999999999' - mid + '';
+            let output_mid = mid.split("").reverse().join("");
+            $("#input-pan").val(first6 + output_mid + last4);
+            $("#input-regid").val(first6.split("").reverse().join("") + regId.split("").reverse().join("") + last4.split("").reverse().join(""));
+        } else if (regId !== '') {
+            let first6 = regId.substr(0, 6);
+            let last4 = regId.substr(regId.length - 4, regId.length);
+            let mid = regId.substr(6, regId.length - 10);
+            let outputMid = '999999999' - mid + '';
+            $("#input-pan").val(first6.split("").reverse().join("") + outputMid + last4.split("").reverse().join(""));
+            $("#input-token").val(first6.split("").reverse().join("") + outputMid.split("").reverse().join("") + last4.split("").reverse().join(""));
+        }
+
+        if (tokenNewlyGen !== '') {
+            if (tokenNewlyGen.toLowerCase() === 'true') {
+                alert("Last three but one digits of PAN should be 000");
+            } else if (tokenNewlyGen.toLowerCase() === 'false') {
+                alert("Last three but one digits of PAN should not be 000");
+            }
+        }
+
+        if (walletType !== '') {
+            switch (walletType.toLowerCase()) {
+                case "android": alert("Second to last digit of reg Id should be 1 or 5 or 9"); break;
+                case "apple": alert("Second to last digit of reg Id should be 2 or 6"); break;
+                case "samsung": alert("Second to last digit of reg Id should be 3 or 7"); break;
+            }
+        }
+
+        if (cvv !== '') {
+            alert ("CVV is the last three but one digits of the token. So token value should be xxx"+cvv+"x");
+        }
     });
 
 })
