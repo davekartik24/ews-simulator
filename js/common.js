@@ -3,12 +3,15 @@ $(document).ready(function () {
         let pan = $("#input-pan").val();
         let token = $("#input-token").val();
         let regId = $("#input-regid").val();
+        let cvv = $("#input-cvv").val();
         if (pan !== '') {
             processInputPan();
         } else if (token !== '') {
             processInputToken();
         } else if (regId !== '') {
             processInputRegId();
+        } else if (cvv !== '') {
+            processInputCvv();
         }
     });
 
@@ -130,4 +133,18 @@ function processInputToken () {
     $("#output-cvv").val(cvv);
     $("#output-expdate").val("5001");
 
+}
+
+function processInputCvv () {
+    let cvv = $("#input-cvv").val();
+    let orderLvt = '3';
+    while (orderLvt.length < 18) {
+        if (cvv !== '') {
+            orderLvt += cvv;
+        } else {
+            orderLvt += '00000000000000000';
+        }
+    }
+    orderLvt = orderLvt.substr(0,18);
+    $("#output-orderlvt").val(orderLvt);
 }
