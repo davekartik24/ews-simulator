@@ -1,6 +1,9 @@
 CHANGELOG
 ---------
 
+## 4.3.11
+* **Change** OrderLVT generation in orderRegistration is now deterministic based on given CVV
+
 ## 4.3.6
 * **Change** Instead of last three digits of PAN last three but one is considered to set the TokenNewlyGeneratedFlag
 * **Change** Instead of last digit to calculate the Wallet properties the second last digit is used
